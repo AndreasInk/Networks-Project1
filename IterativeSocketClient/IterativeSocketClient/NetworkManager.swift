@@ -55,7 +55,9 @@ struct ServerState: Codable, Hashable {
     var currentUsers: CurrentUser
     var runningProcesses: RunningProcesses
     
-    static let empty = ServerState(dateTime: Date.distantPast, upTime: 0, memoryUsage: 0, networkConnections: .empty, currentUsers: .empty, runningProcesses: .empty)
+    static var empty: ServerState {
+        ServerState(dateTime: Date(), upTime: 0, memoryUsage: 0, networkConnections: .empty, currentUsers: .empty, runningProcesses: .empty)
+    }
 }
 struct NetworkConnections: Codable, Hashable {
     var name: String

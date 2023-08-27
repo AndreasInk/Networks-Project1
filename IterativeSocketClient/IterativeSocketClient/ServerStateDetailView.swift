@@ -10,6 +10,6 @@ import SwiftUI
 struct ServerStateDetailView: View {
     var state: ServerState
     var body: some View {
-        Text("Hello, World!")
+        Text(state.dateTime.formatted())
     }
 }

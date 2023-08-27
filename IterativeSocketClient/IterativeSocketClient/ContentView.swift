@@ -17,8 +17,11 @@ struct ContentView: View {
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
                         Button {
-                            networkManager.currentSeverState = .empty
                             selectedState = .empty
+                            if let selectedState {
+                                networkManager.currentSeverState = selectedState
+                                networkManager.severStateHistory.append(selectedState)
+                            }
                             
                         } label: {
                             Image(systemName: "plus")
