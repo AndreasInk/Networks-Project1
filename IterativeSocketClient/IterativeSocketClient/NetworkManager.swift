@@ -10,8 +10,8 @@ import SwiftUI
 class NetworkManager: ObservableObject {
     @Published var currentSeverState: ServerState?
     @Published var severStateHistory: [ServerState] = []
-    @Published var url: URL?
-    func sendAllRequests(numberOfRequests: Int, command: String) {
+    @Published var url: URL? = URL(string: "http://127.0.0.1:5000/")!
+    func sendAllRequests(numberOfRequests: Int, command: ServerCommand) {
         if let url {
             for _ in 0...numberOfRequests {
                 for command in ServerCommand.allCases {
@@ -51,33 +51,33 @@ struct ServerState: Codable, Hashable {
     var dateTime: Date
     var upTime: TimeInterval
     var memoryUsage: Int
-    var networkConnections: NetworkConnections
-    var currentUsers: CurrentUser
-    var runningProcesses: RunningProcesses
-    
+    var networkConnections: [NetworkConnection]
+    var currentUsers: [CurrentUser]
+    var runningProcesses: [RunningProcess]
+    var lastCommandSent: ServerCommand = .dateTime
     static var empty: ServerState {
-        ServerState(dateTime: Date(), upTime: 0, memoryUsage: 0, networkConnections: .empty, currentUsers: .empty, runningProcesses: .empty)
+        ServerState(dateTime: Date(), upTime: 0, memoryUsage: 0, networkConnections: NetworkConnection.empty, currentUsers: CurrentUser.empty, runningProcesses: RunningProcess.empty)
     }
 }
-struct NetworkConnections: Codable, Hashable {
+struct NetworkConnection: Codable, Hashable {
     var name: String
     var ip: Int
     var isConnected: Bool
-    static let empty = NetworkConnections(name: "", ip: 0, isConnected: false)
+    static let empty = [NetworkConnection(name: "", ip: 0, isConnected: false)]
 }
-struct RunningProcesses: Codable, Hashable {
+struct RunningProcess: Codable, Hashable {
     var name: String
     var ip: Int
     var isConnected: Bool
-    static let empty = RunningProcesses(name: "", ip: 0, isConnected: false)
+    static let empty = [RunningProcess(name: "", ip: 0, isConnected: false)]
 }
 struct CurrentUser: Codable, Hashable {
     var name: String
     var ip: Int
     var isConnected: Bool
-    static let empty = CurrentUser(name: "", ip: 0, isConnected: false)
+    static let empty = [CurrentUser(name: "", ip: 0, isConnected: false)]
 }
-enum ServerCommand: String, CaseIterable {
+enum ServerCommand: String, CaseIterable, Codable {
     case dateTime
     case upTime
     case memoryUsage

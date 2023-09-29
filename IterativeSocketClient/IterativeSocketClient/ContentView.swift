@@ -26,7 +26,6 @@ struct ContentView: View {
                         } label: {
                             Image(systemName: "plus")
                         }
-
                     }
                 }
         }, detail: {

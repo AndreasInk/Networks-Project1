@@ -20,7 +20,7 @@ def network_connections():
     return jsonify({"networkConnections": datetime.timedelta()})
 
 @app.route("/currentUsers")
-def network_connections():
+def current_users():
     return jsonify({"currentUsers": datetime.timedelta()})
 
 @app.route("/runningProcesses")
