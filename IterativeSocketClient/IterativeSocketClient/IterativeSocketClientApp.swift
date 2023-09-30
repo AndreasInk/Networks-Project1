@@ -12,6 +12,11 @@ struct IterativeSocketClientApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+        
         }
+        WindowGroup("Analytics", id: .statsWindow) {
+            AnalyticsView(history: ServerState.mockData)
+        }
+        .windowStyle(.hiddenTitleBar)
     }
 }

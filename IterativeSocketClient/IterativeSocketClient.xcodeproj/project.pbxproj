@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E180158A2AC8C6F400C58C53 /* Strings+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18015892AC8C6F400C58C53 /* Strings+Ext.swift */; };
 		E182F48C2A9CE8C7008F439F /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182F48B2A9CE8C7008F439F /* AnalyticsView.swift */; };
 		E1C9AFF32A9A7BCC00A4FD76 /* IterativeSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AFF22A9A7BCC00A4FD76 /* IterativeSocketClientApp.swift */; };
 		E1C9AFF52A9A7BCC00A4FD76 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AFF42A9A7BCC00A4FD76 /* ContentView.swift */; };
@@ -15,9 +16,11 @@
 		E1C9B0022A9A7BF000A4FD76 /* ServerHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9B0012A9A7BF000A4FD76 /* ServerHistoryView.swift */; };
 		E1C9B0042A9A7C0700A4FD76 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9B0032A9A7C0700A4FD76 /* NetworkManager.swift */; };
 		E1C9B0062A9ABCDE00A4FD76 /* ServerStateDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9B0052A9ABCDE00A4FD76 /* ServerStateDetailView.swift */; };
+		E1CF14832AC7614500BB2518 /* ServerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CF14822AC7614500BB2518 /* ServerState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E18015892AC8C6F400C58C53 /* Strings+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Strings+Ext.swift"; sourceTree = "<group>"; };
 		E182F48B2A9CE8C7008F439F /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
 		E1C9AFEF2A9A7BCC00A4FD76 /* IterativeSocketClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IterativeSocketClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1C9AFF22A9A7BCC00A4FD76 /* IterativeSocketClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IterativeSocketClientApp.swift; sourceTree = "<group>"; };
@@ -28,6 +31,7 @@
 		E1C9B0012A9A7BF000A4FD76 /* ServerHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerHistoryView.swift; sourceTree = "<group>"; };
 		E1C9B0032A9A7C0700A4FD76 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E1C9B0052A9ABCDE00A4FD76 /* ServerStateDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerStateDetailView.swift; sourceTree = "<group>"; };
+		E1CF14822AC7614500BB2518 /* ServerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +69,7 @@
 				E182F48B2A9CE8C7008F439F /* AnalyticsView.swift */,
 				E1C9B0052A9ABCDE00A4FD76 /* ServerStateDetailView.swift */,
 				E1C9B0012A9A7BF000A4FD76 /* ServerHistoryView.swift */,
-				E1C9B0032A9A7C0700A4FD76 /* NetworkManager.swift */,
+				E1CF14812AC7612900BB2518 /* Models */,
 				E1C9AFF62A9A7BCE00A4FD76 /* Assets.xcassets */,
 				E1C9AFFB2A9A7BCE00A4FD76 /* IterativeSocketClient.entitlements */,
 				E1C9AFF82A9A7BCE00A4FD76 /* Preview Content */,
@@ -79,6 +83,16 @@
 				E1C9AFF92A9A7BCE00A4FD76 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		E1CF14812AC7612900BB2518 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E1C9B0032A9A7C0700A4FD76 /* NetworkManager.swift */,
+				E18015892AC8C6F400C58C53 /* Strings+Ext.swift */,
+				E1CF14822AC7614500BB2518 /* ServerState.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -153,9 +167,11 @@
 			files = (
 				E1C9B0042A9A7C0700A4FD76 /* NetworkManager.swift in Sources */,
 				E1C9B0062A9ABCDE00A4FD76 /* ServerStateDetailView.swift in Sources */,
+				E180158A2AC8C6F400C58C53 /* Strings+Ext.swift in Sources */,
 				E1C9B0022A9A7BF000A4FD76 /* ServerHistoryView.swift in Sources */,
 				E182F48C2A9CE8C7008F439F /* AnalyticsView.swift in Sources */,
 				E1C9AFF52A9A7BCC00A4FD76 /* ContentView.swift in Sources */,
+				E1CF14832AC7614500BB2518 /* ServerState.swift in Sources */,
 				E1C9AFF32A9A7BCC00A4FD76 /* IterativeSocketClientApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,13 +10,14 @@ import SwiftUI
 struct ServerStateDetailView: View {
     var state: ServerState
     var body: some View {
-        List {
+        VStack(alignment: .leading, spacing: 20) {
             Section("General Info") {
                 VStack(alignment: .leading) {
                     Text(state.dateTime, format: .dateTime)
                     Text(state.memoryUsage, format: .number)
                 }
             }
+            Divider()
             Section("Connections") {
                 VStack(alignment: .leading) {
                     ForEach(state.networkConnections, id: \.name) { connection in
@@ -31,5 +32,7 @@ struct ServerStateDetailView: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .padding()
     }
 }

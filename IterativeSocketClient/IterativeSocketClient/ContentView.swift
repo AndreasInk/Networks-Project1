@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var networkManager = NetworkManager()
     @State var selectedState: ServerState?
+    @Environment(\.openWindow) var openWindow
     var body: some View {
         
         NavigationSplitView(sidebar: {
@@ -25,6 +26,13 @@ struct ContentView: View {
                             
                         } label: {
                             Image(systemName: "plus")
+                        }
+                    }
+                    ToolbarItem {
+                        Button {
+                            openWindow(id: .statsWindow)
+                        } label: {
+                            Image(systemName: "chart.bar")
                         }
                     }
                 }
