@@ -17,30 +17,45 @@ for command in commands:
 
 inputKey = input(inputInstructions)
 
-def fetch(endpoint: str) -> requests.Response:
+def fetch(endpoint: str) -> requests.Response | str:
     try:
-        requests.get(baseURL + endpoint)
+        return requests.get(baseURL + endpoint)
     except:
         print(requestErrorDescription)
+    return requestErrorDescription
 
-def getDateTime():
-    dateTimeResponse = fetch("dateTime")
-    json = dateTimeResponse.json()
-    return json["dateTime"]
+def getBasicEndpoint(endpoint: str):
+    response = fetch(endpoint)
+    if response == requestErrorDescription: return 
+    json = response.json()
+    print(json[endpoint])
+    return json[endpoint]
 
-def getUpTime():
-    dateTimeResponse = fetch("upTime")
+def getComplexEndpoint(endpoint: str):
+    dateTimeResponse = fetch(endpoint)
+    if dateTimeResponse == requestErrorDescription: return 
     json = dateTimeResponse.json()
-    return json["upTime"]
+    return json
+
+def printJSON(columns: str, json):
+    for column in columns:
+        print(column + ": " + json[column])
 
 # Start listening for new input
 # TODO: Add the other requests and break up into many methods (one for dateTime, upTime, etc)
-while inputKey != "":
+while inputKey != "" or inputKey != "q":
 
     if inputKey == "d":
-        getDateTime()
+        getBasicEndpoint("dateTime")
 
     if inputKey == "u":
-        getUpTime()
+        getBasicEndpoint("upTime")
+
+    if inputKey == "m":
+        getBasicEndpoint("memoryUsage")
+
+    if inputKey == "n":
+        networkConnections = getComplexEndpoint("networkConnections")
+       
 
     inputKey = input()
