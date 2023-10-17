@@ -17,11 +17,30 @@ for command in commands:
 
 inputKey = input(inputInstructions)
 
+def fetch(endpoint: str) -> requests.Response:
+    try:
+        requests.get(baseURL + endpoint)
+    except:
+        print(requestErrorDescription)
+
+def getDateTime():
+    dateTimeResponse = fetch("dateTime")
+    json = dateTimeResponse.json()
+    return json["dateTime"]
+
+def getUpTime():
+    dateTimeResponse = fetch("upTime")
+    json = dateTimeResponse.json()
+    return json["upTime"]
+
 # Start listening for new input
+# TODO: Add the other requests and break up into many methods (one for dateTime, upTime, etc)
 while inputKey != "":
+
     if inputKey == "d":
-        try:
-            requests.get(baseURL + "dateTime")
-        except:
-            print(requestErrorDescription)
+        getDateTime()
+
+    if inputKey == "u":
+        getUpTime()
+
     inputKey = input()
