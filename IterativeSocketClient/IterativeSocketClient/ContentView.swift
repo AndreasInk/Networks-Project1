@@ -8,22 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var networkManager = NetworkManager()
+    @EnvironmentObject var networkManager: NetworkManager
     @State var selectedState: ServerState?
     @Environment(\.openWindow) var openWindow
     var body: some View {
         
         NavigationSplitView(sidebar: {
-            ServerHistoryView(selectedState: $selectedState, history: networkManager.severStateHistory)
+            ServerHistoryView(selectedState: $selectedState, history: networkManager.serverStateHistory)
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
                         Button {
-                            selectedState = .empty
-                            if let selectedState {
-                                networkManager.currentSeverState = selectedState
-                                networkManager.severStateHistory.append(selectedState)
-                            }
-                            
+                            networkManager.sendRequest()
+//                            selectedState = .mockData.randomElement()!
+//                            if let selectedState {
+//                                networkManager.currentSeverState = selectedState
+//                                networkManager.severStateHistory.append(selectedState)
+//                            }
                         } label: {
                             Image(systemName: "plus")
                         }

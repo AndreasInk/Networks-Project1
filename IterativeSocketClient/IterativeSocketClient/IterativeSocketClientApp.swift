@@ -9,13 +9,15 @@ import SwiftUI
 
 @main
 struct IterativeSocketClientApp: App {
+    @StateObject var networkManager = NetworkManager()
     var body: some Scene {
         WindowGroup {
             ContentView()
-        
+                .environmentObject(networkManager)
         }
         WindowGroup("Analytics", id: .statsWindow) {
-            AnalyticsView(history: ServerState.mockData)
+            AnalyticsView()
+                .environmentObject(networkManager)
         }
         .windowStyle(.hiddenTitleBar)
     }

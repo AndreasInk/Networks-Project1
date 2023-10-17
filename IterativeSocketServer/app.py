@@ -1,30 +1,48 @@
 from flask import Flask, jsonify
-import datetime
+import time
 import os
+import subprocess
+import psutil
+
 app = Flask(__name__)
 
 @app.route("/dateTime")
 def date_time():
-    return datetime.timedelta()
+    return jsonify({"dateTime": time.time()})
 # hello
 @app.route("/upTime")
 def up_time():
-    return datetime.timedelta()
+    return jsonify(time.time() - psutil.boot_time())
 
 @app.route("/memoryUsage")
 def memory_usage():
-    return os.cpu_count()
+    return jsonify({"cpu": os.cpu_count()})
 
-@app.route("/returnNetworkConnections")
+@app.route("/networkConnections")
 def network_connections():
-    return jsonify({"networkConnections": datetime.timedelta()})
+    
+    result = subprocess.run(['netstat', '-tuln'], stdout=subprocess.PIPE, text=True)
+    jsonToReturn = []
+    for line in result.stdout.split("\n"):
+        print(len(line.split()))
+        if len(line.split()) == 8:
+            protocol, receiveQueue, sendQueue, localAddress, foreignAddress, _, state, _ = line.split()
+            jsonToReturn.append({"proto": protocol, "receiveQueue": receiveQueue, "sendQueue": sendQueue, "localAddress": localAddress, "foreignAddress": foreignAddress, "state": state})
+    return jsonify(jsonToReturn)
 
 @app.route("/currentUsers")
 def current_users():
-    return jsonify({"currentUsers": datetime.timedelta()})
+    users = []
+    for user in psutil.users():
+        users.append({"name": user.name,
+                      "host": user.host})
+    return jsonify({"currentUsers": users})
 
 @app.route("/runningProcesses")
 def running_processes():
-    return jsonify({"processes": datetime.timedelta()})
+    processes = []
+    for process in psutil.process_iter(attrs=["pid", "name"]):
+        processes.append(process)
+    return jsonify({"processes": processes})
 
 app.run(threaded=False)

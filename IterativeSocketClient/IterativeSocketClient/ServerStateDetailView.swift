@@ -15,19 +15,21 @@ struct ServerStateDetailView: View {
                 VStack(alignment: .leading) {
                     Text(state.dateTime, format: .dateTime)
                     Text(state.memoryUsage, format: .number)
+                    Text(state.turnAroundTime, format: .number)
                 }
             }
-            Divider()
             Section("Connections") {
-                VStack(alignment: .leading) {
-                    ForEach(state.networkConnections, id: \.name) { connection in
-                        Text(connection.ip, format: .number)
-                    }
-                    ForEach(state.currentUsers, id: \.name) { connection in
-                        Text(connection.name)
-                    }
-                    ForEach(state.runningProcesses, id: \.name) { connection in
-                        Text(connection.name)
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        ForEach(state.networkConnections, id: \.localAddress) { connection in
+                            Text(connection.foreignAddress)
+                        }
+                        ForEach(state.currentUsers, id: \.name) { connection in
+                            Text(connection.name)
+                        }
+                        ForEach(state.runningProcesses, id: \.name) { connection in
+                            Text(connection.name)
+                        }
                     }
                 }
             }
