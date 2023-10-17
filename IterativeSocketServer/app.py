@@ -12,7 +12,7 @@ def date_time():
 # hello
 @app.route("/upTime")
 def up_time():
-    return jsonify(time.time() - psutil.boot_time())
+    return jsonify({"upTime": time.time() - psutil.boot_time()})
 
 @app.route("/memoryUsage")
 def memory_usage():
@@ -36,13 +36,13 @@ def current_users():
     for user in psutil.users():
         users.append({"name": user.name,
                       "host": user.host})
-    return jsonify({"currentUsers": users})
+    return jsonify(users)
 
 @app.route("/runningProcesses")
 def running_processes():
     processes = []
     for process in psutil.process_iter(attrs=["pid", "name"]):
         processes.append(process)
-    return jsonify({"processes": processes})
+    return jsonify(processes)
 
 app.run(threaded=False)
