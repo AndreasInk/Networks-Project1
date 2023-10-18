@@ -17,6 +17,7 @@ for command in commands:
 
 inputKey = input(inputInstructions)
 
+# Example: https://google.api.com/someEndpoint
 def fetch(endpoint: str) -> requests.Response | str:
     try:
         return requests.get(baseURL + endpoint)
@@ -37,9 +38,12 @@ def getComplexEndpoint(endpoint: str):
     json = dateTimeResponse.json()
     return json
 
-def printJSON(columns: str, json):
+def printJSON(columns: [str], json):
     for column in columns:
-        print(column + ": " + json[column])
+        try:
+            print(column + ": " + json[column])
+        except:
+            print("Column not found")
 
 # Start listening for new input
 # TODO: Add the other requests and break up into many methods (one for dateTime, upTime, etc)
@@ -56,6 +60,6 @@ while inputKey != "" or inputKey != "q":
 
     if inputKey == "n":
         networkConnections = getComplexEndpoint("networkConnections")
-       
+        printJSON(["proto", "receiveQueue", "sendQueue", "localAddress", "foreignAddress", "state"], networkConnections)
 
     inputKey = input()

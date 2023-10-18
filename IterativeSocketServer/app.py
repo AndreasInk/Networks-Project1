@@ -18,7 +18,7 @@ def up_time():
 
 @app.route("/memoryUsage")
 def memory_usage():
-    return jsonify({"cpu": os.cpu_count()})
+    return jsonify({"memoryUsage": os.cpu_count()})
 
 # Returns network connections 
 # TODO: Check for correct fields in the project instructions
