@@ -27,10 +27,15 @@ def fetch(endpoint: str) -> requests.Response | str:
 
 def getBasicEndpoint(endpoint: str):
     response = fetch(endpoint)
-    if response == requestErrorDescription: return 
-    json = response.json()
-    print(json[endpoint])
-    return json[endpoint]
+    if response == requestErrorDescription: 
+        print(requestErrorDescription) 
+        return 
+    try:
+        json = response.json()
+        return json[endpoint]
+    except:
+        print(requestErrorDescription)
+        return
 
 def getComplexEndpoint(endpoint: str):
     dateTimeResponse = fetch(endpoint)
@@ -50,16 +55,17 @@ def printJSON(columns: [str], json):
 while inputKey != "" or inputKey != "q":
 
     if inputKey == "d":
-        getBasicEndpoint("dateTime")
+        print(getBasicEndpoint("dateTime"))
 
     if inputKey == "u":
-        getBasicEndpoint("upTime")
+        print(getBasicEndpoint("upTime"))
 
     if inputKey == "m":
-        getBasicEndpoint("memoryUsage")
+        print(getBasicEndpoint("memoryUsage"))
 
     if inputKey == "n":
         networkConnections = getComplexEndpoint("networkConnections")
         printJSON(["proto", "receiveQueue", "sendQueue", "localAddress", "foreignAddress", "state"], networkConnections)
+        
 
     inputKey = input()
