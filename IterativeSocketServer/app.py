@@ -22,7 +22,6 @@ def memory_usage():
 # TODO: Check for correct fields in the project instructions
 def network_connections():
     
-    # We use subprocess orginally before researching psutil, psutil or subprocess works
     result = subprocess.run(['netstat'], stdout=subprocess.PIPE, text=True)
     jsonToReturn = []
     # We have to do some parsing to return a json
@@ -49,6 +48,7 @@ def running_processes():
         processes.append(process)
     return json.dumps(processes)
 
+# Bundles our response in a readable way
 def package_response(self, response):
     self.send_response(200)
     self.send_header("Content-Type", "application/json")
@@ -57,6 +57,7 @@ def package_response(self, response):
     
 class ServerHandler(http.server.BaseHTTPRequestHandler):
     
+    # Calls when we do a get request
     def do_GET(self):
         path = self.path
 
@@ -90,6 +91,7 @@ class ServerHandler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write("Not found".encode())
 
+# Starts our server
 with socketserver.TCPServer(("", 8305), ServerHandler) as httpd:
     print(f"Serving")
     httpd.serve_forever()

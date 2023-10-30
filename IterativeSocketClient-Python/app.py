@@ -2,18 +2,15 @@ import requests
 
 # Constant strings we may use for errors or other messaging
 requestErrorDescription = "Request failed, please try again"
+commands = ["d = date time", "u = up time", "m = memory usage", "n = network connections", "p = running processes", "cu = current users"]
+inputInstructions = "Command to run\n"
+for command in commands:
+    inputInstructions = inputInstructions + command + "\n"
 
 # Get the configuration of the server
 serverAddress = input("IP Address of Server: ")
 serverPort = input("Port of Server: ")
 baseURL = f"{serverAddress}:{serverPort}/"
-
-# Configure setup instructions 
-commands = ["d = date time", "u = up time"]
-inputInstructions = "Command to run\n"
-
-for command in commands:
-    inputInstructions = inputInstructions + command + "\n"
 
 inputKey = input(inputInstructions)
 
@@ -66,6 +63,15 @@ while inputKey != "" or inputKey != "q":
     if inputKey == "n":
         networkConnections = getComplexEndpoint("networkConnections")
         printJSON(["proto", "receiveQueue", "sendQueue", "localAddress", "foreignAddress", "state"], networkConnections)
-        
+    
+    if inputKey == "p":
+        runningProcesses = getComplexEndpoint("runningProcesses")
+        # TODO: find field values
+        printJSON(["tbd"], runningProcesses)
+    
+    if inputKey == "cu":
+        runningProcesses = getComplexEndpoint("currentUsers")
+        # TODO: find field values
+        printJSON(["tbd"], runningProcesses)
 
     inputKey = input()
