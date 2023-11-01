@@ -54,7 +54,7 @@ def package_response(self, response):
     self.send_header("Content-Type", "application/json")
     self.end_headers()
     self.wfile.write(response.encode())
-    
+
 class ServerHandler(http.server.BaseHTTPRequestHandler):
     
     # Calls when we do a get request
