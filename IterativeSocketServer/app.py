@@ -27,10 +27,10 @@ def network_connections():
     jsonToReturn = []
     # We have to do some parsing to return a json
     for line in result.split("\n"):
+        print(f"current_users {len(line.split())}")
         if len(line.split()) == 8:
             protocol, receiveQueue, sendQueue, localAddress, foreignAddress, _, state, _ = line.split()
             jsonToReturn.append({"proto": protocol, "receiveQueue": receiveQueue, "sendQueue": sendQueue, "localAddress": localAddress, "foreignAddress": foreignAddress, "state": state})
-            print(jsonToReturn["proto", "receiveQueue", "sendQueue", "localAddress", "foreignAddress", "state"])
     return json.dumps(jsonToReturn)
 
 # TODO: Check for correct fields in the project instructions
