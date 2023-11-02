@@ -12,7 +12,7 @@ struct ServerState: Codable, Hashable {
         return lhs.dateTime == rhs.dateTime
     }
     
-    var dateTime: Date
+    var dateTime: TimeInterval
     var upTime: TimeInterval
     var memoryUsage: Int
     var networkConnections: [NetworkConnection]
@@ -24,7 +24,7 @@ struct ServerState: Codable, Hashable {
     var averageTurnAroundTime: Double = 0
     
     static var empty: ServerState {
-        ServerState(dateTime: Date(), upTime: 0, memoryUsage: 0, networkConnections: NetworkConnection.empty, currentUsers: CurrentUser.empty, runningProcesses: RunningProcess.empty)
+        ServerState(dateTime: .infinity, upTime: 0, memoryUsage: 0, networkConnections: NetworkConnection.empty, currentUsers: CurrentUser.empty, runningProcesses: RunningProcess.empty)
     }
     
     // Define a mock array of ServerState instances
@@ -57,6 +57,19 @@ struct NetworkConnection: Codable, Hashable {
     let state: String?
     
     static let empty = [NetworkConnection(proto: "", receiveQueue: "", sendQueue: "", localAddress: "", foreignAddress: "", state: "")]
+}
+
+struct DateTime: Codable, Hashable {
+    var dateTime: Double
+
+}
+
+struct UpTime: Codable, Hashable {
+    var upTime: Double
+}
+
+struct MemoryUsage: Codable, Hashable {
+    var memoryUsage: Double
 }
 
 struct RunningProcess: Codable, Hashable {

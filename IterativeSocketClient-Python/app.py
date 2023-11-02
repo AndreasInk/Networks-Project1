@@ -11,7 +11,13 @@ for command in commands:
 
 # Get the configuration of the server
 serverAddress = input("IP Address of Server (http://localhost): ")
+if serverAddress == "":
+    serverAddress = "http://localhost"
+
 serverPort = input("Port of Server (8080): ")
+if serverPort == "":
+    serverPort = "3216"
+    
 baseURL = f"{serverAddress}:{serverPort}/"
 
 inputKey = input(inputInstructions)
@@ -74,18 +80,20 @@ while inputKey != "" or inputKey != "q":
         
         if inputKey == "p":
             runningProcesses = getComplexEndpoint("runningProcesses")
-            # TODO: find field values
-            printJSON(["tbd", "tbh"], runningProcesses)
+            print(runningProcesses)
+            printJSON(["user", "pid"], runningProcesses)
         
         if inputKey == "cu":
-            runningProcesses = getComplexEndpoint("currentUsers")
-            # TODO: find field values
-            printJSON(["tbd"], runningProcesses)
+            currentUsers = getComplexEndpoint("currentUsers")
+            printJSON(["name", "host"], currentUsers)
 
         averageTimes.append(datetime.datetime.now().timestamp() - iterationStartDate)
 
-    inputKey = input()
+    inputKey = input(inputInstructions)
+    iterations = int(input(iterationInstructions))
 
-    print(f"Request over time: {averageTimes}")
+    print(f"Requests over time: {averageTimes}")
     print(f"Average time per request: {mean(averageTimes)}")
+
+    averageTimes = []
     

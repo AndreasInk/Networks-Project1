@@ -10,8 +10,8 @@ import SwiftUI
 extension String {
     static let statsWindow = "statsWindow"
 }
-extension Date {
-    static var random: Date {
-        Date().addingTimeInterval(TimeInterval.random(in: -1...1))
+extension TimeInterval {
+    static var random: TimeInterval {
+        Date().addingTimeInterval(TimeInterval.random(in: -1...1)).timeIntervalSince1970
     }
 }

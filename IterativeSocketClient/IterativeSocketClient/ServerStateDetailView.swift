@@ -13,7 +13,7 @@ struct ServerStateDetailView: View {
         VStack(alignment: .leading, spacing: 20) {
             Section("General Info") {
                 VStack(alignment: .leading) {
-                    Text(state.dateTime, format: .dateTime)
+                    Text(Date(timeIntervalSince1970: state.dateTime), format: .dateTime)
                     Text(state.memoryUsage, format: .number)
                     Text(state.turnAroundTime, format: .number)
                 }

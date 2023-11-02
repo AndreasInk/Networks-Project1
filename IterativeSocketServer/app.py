@@ -5,15 +5,16 @@ import subprocess
 import socketserver
 import http.server
 import json 
+import datetime
 
 def date_time():
     return json.dumps({"dateTime": time.time()})
 
 def up_time():
     uptime = subprocess.run(['uptime', '-s'], stdout=subprocess.PIPE)
-    uptime_output = uptime.stdout.strip().decode('utf-8')
-    uptime_fields = uptime_output.split(" ")
-    return json.dumps({"upTime": time.time() - int(uptime_fields[1])})
+    uptime_output = uptime.stdout.decode('utf-8').strip()
+    uptime_float = datetime.datetime.strptime(uptime_output, '%Y-%m-%d %H:%M:%S').timestamp()
+    return json.dumps({"upTime": time.time() - uptime_float})
 
 def memory_usage():
     return json.dumps({"memoryUsage": os.cpu_count()})
@@ -22,10 +23,10 @@ def memory_usage():
 # TODO: Check for correct fields in the project instructions
 def network_connections():
     
-    result = subprocess.run(['netstat'], stdout=subprocess.PIPE)
+    result = subprocess.run(['netstat'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     jsonToReturn = []
     # We have to do some parsing to return a json
-    for line in result.stdout.decode('utf-8').split("\n"):
+    for line in result.split("\n"):
         if len(line.split()) == 8:
             protocol, receiveQueue, sendQueue, localAddress, foreignAddress, _, state, _ = line.split()
             jsonToReturn.append({"proto": protocol, "receiveQueue": receiveQueue, "sendQueue": sendQueue, "localAddress": localAddress, "foreignAddress": foreignAddress, "state": state})
@@ -35,17 +36,26 @@ def network_connections():
 def current_users():
     users = []
     current_users = subprocess.run(['who'], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    for user in current_users:
-        users.append({"name": user.name,
-                    "host": user.host})
+    for line in current_users.split("\n"):
+        print(f"current_users {len(line.split())}")
+        if len(line.split()) == 5:
+            name, host, _, _, _ = line.split()
+            users.append({"name": name,
+                    "host": host})
     return json.dumps(users)
 
 # TODO: Check for correct fields in the project instructions
 def running_processes():
     processes = []
-    current_processes = subprocess.run(['ps'], stdout=subprocess.PIPE)
-    for process in current_processes:
-        processes.append(process)
+    current_processes = subprocess.run(['ps'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    for line in current_processes.split("\n"):
+        print(f"running processes {len(line.split())}")
+        if len(line.split()) == 5:
+           user, pid, cpu, mem, _ = line.split()
+           processes.append({
+                "user": user,
+                "pid": pid,
+            })
     return json.dumps(processes)
 
 # Bundles our response in a readable way
@@ -92,6 +102,6 @@ class ServerHandler(http.server.BaseHTTPRequestHandler):
             self.wfile.write("Not found".encode())
 
 # Starts our server
-with socketserver.TCPServer(("", 3215), ServerHandler) as httpd:
+with socketserver.TCPServer(("", 3216), ServerHandler) as httpd:
     print(f"Serving")
     httpd.serve_forever()
