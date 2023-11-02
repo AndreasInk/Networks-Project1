@@ -10,8 +10,8 @@ def date_time():
     return json.dumps({"dateTime": time.time()})
 
 def up_time():
-    uptime = subprocess.run(['uptime', '-s'], stdout=subprocess.PIPE, text=True)
-    uptime_output = uptime.stdout.strip()
+    uptime = subprocess.run(['uptime', '-s'], stdout=subprocess.PIPE)
+    uptime_output = uptime.stdout.strip().decode('utf-8')
     uptime_fields = uptime_output.split(" ")
     return json.dumps({"upTime": time.time() - int(uptime_fields[1])})
 
@@ -22,10 +22,10 @@ def memory_usage():
 # TODO: Check for correct fields in the project instructions
 def network_connections():
     
-    result = subprocess.run(['netstat'], stdout=subprocess.PIPE, text=True)
+    result = subprocess.run(['netstat'], stdout=subprocess.PIPE)
     jsonToReturn = []
     # We have to do some parsing to return a json
-    for line in result.stdout.split("\n"):
+    for line in result.stdout.decode('utf-8').split("\n"):
         if len(line.split()) == 8:
             protocol, receiveQueue, sendQueue, localAddress, foreignAddress, _, state, _ = line.split()
             jsonToReturn.append({"proto": protocol, "receiveQueue": receiveQueue, "sendQueue": sendQueue, "localAddress": localAddress, "foreignAddress": foreignAddress, "state": state})
@@ -34,7 +34,7 @@ def network_connections():
 # TODO: Check for correct fields in the project instructions
 def current_users():
     users = []
-    current_users = subprocess.run(['who'], stdout=subprocess.PIPE, text=True)
+    current_users = subprocess.run(['who'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     for user in current_users:
         users.append({"name": user.name,
                     "host": user.host})
@@ -43,7 +43,7 @@ def current_users():
 # TODO: Check for correct fields in the project instructions
 def running_processes():
     processes = []
-    current_processes = subprocess.run(['ps'], stdout=subprocess.PIPE, text=True)
+    current_processes = subprocess.run(['ps'], stdout=subprocess.PIPE)
     for process in current_processes:
         processes.append(process)
     return json.dumps(processes)
@@ -92,6 +92,6 @@ class ServerHandler(http.server.BaseHTTPRequestHandler):
             self.wfile.write("Not found".encode())
 
 # Starts our server
-with socketserver.TCPServer(("", 8305), ServerHandler) as httpd:
+with socketserver.TCPServer(("", 3215), ServerHandler) as httpd:
     print(f"Serving")
     httpd.serve_forever()

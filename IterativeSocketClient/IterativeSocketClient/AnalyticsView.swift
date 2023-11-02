@@ -13,7 +13,6 @@ struct AnalyticsView: View {
     @State var selectedCommand = ServerCommand.dateTime
     @State var selectedTime = TurnAroundTime.elapsed
     var body: some View {
-        let history = networkManager.serverStateHistory
         VStack(alignment: .leading) {
             HStack {
                 Text(selectedCommand.rawValue)
@@ -39,16 +38,16 @@ struct AnalyticsView: View {
             Chart {
                 switch selectedTime {
                 case .elapsed:
-                    ForEach(history, id: \.dateTime) { state in
+                    ForEach(networkManager.serverStateHistory, id: \.dateTime) { state in
                         LineMark(x: .value("", state.dateTime), y: .value("", state.turnAroundTime))
                     }
                 case .total:
-                    ForEach(history, id: \.dateTime) { state in
+                    ForEach(networkManager.serverStateHistory, id: \.dateTime) { state in
                         LineMark(x: .value("", state.dateTime), y: .value("", state.turnAroundTime))
                     }
                 case .average:
-                    ForEach(history, id: \.dateTime) { state in
-                        LineMark(x: .value("", state.dateTime), y: .value("", state.turnAroundTime))
+                    ForEach(networkManager.serverStateHistory, id: \.dateTime) { state in
+                        LineMark(x: .value("", state.dateTime), y: .value("", state.averageTurnAroundTime))
                     }
                 }
                 
@@ -73,3 +72,4 @@ struct AnalyticsView: View {
         .padding()
     }
 }
+

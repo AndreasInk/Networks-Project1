@@ -12,6 +12,6 @@ extension String {
 }
 extension Date {
     static var random: Date {
-        Date().addingTimeInterval(TimeInterval.random(in: -3600...0))
+        Date().addingTimeInterval(TimeInterval.random(in: -1...1))
     }
 }

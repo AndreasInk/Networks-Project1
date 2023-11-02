@@ -10,8 +10,8 @@ for command in commands:
     inputInstructions = inputInstructions + command + "\n"
 
 # Get the configuration of the server
-serverAddress = input("IP Address of Server: ")
-serverPort = input("Port of Server: ")
+serverAddress = input("IP Address of Server (http://localhost): ")
+serverPort = input("Port of Server (8080): ")
 baseURL = f"{serverAddress}:{serverPort}/"
 
 inputKey = input(inputInstructions)
@@ -20,13 +20,14 @@ iterations = int(input(iterationInstructions))
 averageTimes = []
 
 # Example: https://google.api.com/someEndpoint
-def fetch(endpoint: str) -> requests.Response | str:
+def fetch(endpoint: str):
     try:
         return requests.get(baseURL + endpoint)
     except:
         print(requestErrorDescription)
     return requestErrorDescription
 
+# For basic endpoints that just return a number
 def getBasicEndpoint(endpoint: str):
     response = fetch(endpoint)
     if response == requestErrorDescription: 
@@ -39,12 +40,14 @@ def getBasicEndpoint(endpoint: str):
         print(requestErrorDescription)
         return
 
+# For complex endpoints that return a few componets
 def getComplexEndpoint(endpoint: str):
     dateTimeResponse = fetch(endpoint)
     if dateTimeResponse == requestErrorDescription: return 
     json = dateTimeResponse.json()
     return json
 
+# Given columns, this method prints the column and value
 def printJSON(columns: [str], json):
     for column in columns:
         try:

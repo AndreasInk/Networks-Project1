@@ -19,11 +19,6 @@ struct ContentView: View {
                     ToolbarItem(placement: .primaryAction) {
                         Button {
                             networkManager.sendRequest()
-//                            selectedState = .mockData.randomElement()!
-//                            if let selectedState {
-//                                networkManager.currentSeverState = selectedState
-//                                networkManager.severStateHistory.append(selectedState)
-//                            }
                         } label: {
                             Image(systemName: "plus")
                         }
