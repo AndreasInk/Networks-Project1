@@ -50,8 +50,8 @@ def running_processes():
     current_processes = subprocess.run(['ps'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     for line in current_processes.split("\n"):
         print(f"running processes {len(line.split())}")
-        if len(line.strip().split()) == 5:
-           user, pid, cpu, mem, _ = line.split()
+        if len(line.strip().split()) == 4:
+           user, pid, cpu, mem = line.split()
            processes.append({
                 "user": user,
                 "pid": pid,
