@@ -22,10 +22,15 @@ struct ServerState: Codable, Hashable {
     var lastCommandSent: ServerCommand = .dateTime
     var turnAroundTime: Double = 0
     var totalTurnAroundTime: Double = 0
-    var averageTurnAroundTime: Double = 0
+    var turnAroundCount: Int = 0
+    var averageTurnAroundTime: Double {
+        return totalTurnAroundTime/Double(turnAroundCount)
+    }
+    
+    var command: ServerCommand = .dateTime
     
     static var empty: ServerState {
-        ServerState(dateTime: .infinity, upTime: 0, memoryUsage: 0, networkConnections: NetworkConnection.empty, currentUsers: CurrentUser.empty, runningProcesses: RunningProcess.empty)
+        ServerState(dateTime: .infinity, upTime: 0, memoryUsage: 0, networkConnections: NetworkConnection.empty, currentUsers: CurrentUser.empty, runningProcesses: RunningProcess.empty, command: .dateTime)
     }
     
     // Define a mock array of ServerState instances
@@ -39,12 +44,12 @@ struct ServerState: Codable, Hashable {
         let runningProcess2 = RunningProcess(name: "Process2", ip: 1921686, isConnected: false)
         
         return [
-            ServerState(dateTime: .random, upTime: 3600, memoryUsage: 512, networkConnections: [networkConnection1], currentUsers: [currentUser1], runningProcesses: [runningProcess1], averageTurnAroundTime: Double.random(in: 0...0.2)),
-            ServerState(dateTime: .random, upTime: 7200, memoryUsage: 1024, networkConnections: [networkConnection1, networkConnection2], currentUsers: [currentUser1, currentUser2], runningProcesses: [runningProcess1, runningProcess2], averageTurnAroundTime: Double.random(in: 0...0.2)),
-            ServerState(dateTime: .random, upTime: 10800, memoryUsage: 2048, networkConnections: [networkConnection2], currentUsers: [currentUser2], runningProcesses: [runningProcess2], averageTurnAroundTime: Double.random(in: 0...0.2)),
-            ServerState(dateTime: .random, upTime: 10800, memoryUsage: 2048, networkConnections: [networkConnection2], currentUsers: [currentUser2], runningProcesses: [runningProcess2], averageTurnAroundTime: Double.random(in: 0...0.2)),
-            ServerState(dateTime: .random, upTime: 10800, memoryUsage: 2048, networkConnections: [networkConnection2], currentUsers: [currentUser2], runningProcesses: [runningProcess2], averageTurnAroundTime: Double.random(in: 0...0.2)),
-            ServerState(dateTime: .random, upTime: 10800, memoryUsage: 2048, networkConnections: [networkConnection2], currentUsers: [currentUser2], runningProcesses: [runningProcess2], averageTurnAroundTime: Double.random(in: 0...0.2))
+            ServerState(dateTime: .random, upTime: 3600, memoryUsage: 512, networkConnections: [networkConnection1], currentUsers: [currentUser1], runningProcesses: [runningProcess1], totalTurnAroundTime: Double.random(in: 0...0.2)),
+            ServerState(dateTime: .random, upTime: 7200, memoryUsage: 1024, networkConnections: [networkConnection1, networkConnection2], currentUsers: [currentUser1, currentUser2], runningProcesses: [runningProcess1, runningProcess2], totalTurnAroundTime: Double.random(in: 0...0.2)),
+            ServerState(dateTime: .random, upTime: 10800, memoryUsage: 2048, networkConnections: [networkConnection2], currentUsers: [currentUser2], runningProcesses: [runningProcess2], totalTurnAroundTime: Double.random(in: 0...0.2)),
+            ServerState(dateTime: .random, upTime: 10800, memoryUsage: 2048, networkConnections: [networkConnection2], currentUsers: [currentUser2], runningProcesses: [runningProcess2], totalTurnAroundTime: Double.random(in: 0...0.2)),
+            ServerState(dateTime: .random, upTime: 10800, memoryUsage: 2048, networkConnections: [networkConnection2], currentUsers: [currentUser2], runningProcesses: [runningProcess2], totalTurnAroundTime: Double.random(in: 0...0.2)),
+            ServerState(dateTime: .random, upTime: 10800, memoryUsage: 2048, networkConnections: [networkConnection2], currentUsers: [currentUser2], runningProcesses: [runningProcess2], totalTurnAroundTime: Double.random(in: 0...0.2))
         ]
     }
 }

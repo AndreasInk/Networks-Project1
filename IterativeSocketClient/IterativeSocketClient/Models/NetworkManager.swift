@@ -9,12 +9,14 @@ import SwiftUI
 
 class NetworkManager: ObservableObject {
     
-    @Published var serverStateHistory: [Date: ServerState] = [:]
+    @MainActor @Published var serverStateHistory: [Date: ServerState] = [:]
+    @MainActor @Published var serverStateHistorySecond: [Date: ServerState] = [:]
+    @MainActor @Published var serverStateHistoryMinute: [Date: ServerState] = [:]
     @Published var url: URL = URL(string: "http://127.0.0.1:3216")!//URL(string: "http://139.62.210.155:3215")!
     
     let decoder = JSONDecoder()
     
-    @MainActor func sendRequests(numberOfRequests: Int, command: ServerCommand) {
+   func sendRequests(numberOfRequests: Int, command: ServerCommand) {
         let date = Date()
         for _ in 0...numberOfRequests {
             Task {
@@ -23,36 +25,63 @@ class NetworkManager: ObservableObject {
                 let data = try await session.data(from: url.appending(path: command.rawValue))
                 print(String(data: data.0, encoding: .utf8))
                 decoder.dateDecodingStrategy = .secondsSince1970
-                if serverStateHistory[date] == nil {
-                    serverStateHistory[date] = .empty
+                if await serverStateHistory[date] == nil {
+                    Task { @MainActor in
+                        serverStateHistory[date] = .empty
+                    }
                 }
-                var currentSeverState = ServerState.empty
-                switch command {
-                case .dateTime:
-                    try await MainActor.run {
+                Task { @MainActor in
+                    var currentSeverState = ServerState.empty
+                    switch command {
+                    case .dateTime:
                         currentSeverState.dateTime = try decoder.decode(DateTime.self, from: data.0).dateTime
-                    }
-                case .upTime:
-                    try await MainActor.run {
+                        currentSeverState.command = .dateTime
+                    case .upTime:
                         currentSeverState.upTime = try decoder.decode(UpTime.self, from: data.0).upTime
-                    }
-                case .memoryUsage:
-                    try await MainActor.run {
+                        currentSeverState.command = .upTime
+                    case .memoryUsage:
                         currentSeverState.memoryUsage = Int(try decoder.decode(MemoryUsage.self, from: data.0).memoryUsage)
-                    }
-                case .networkConnections:
-                    try await MainActor.run {
+                        currentSeverState.command = .memoryUsage
+                    case .networkConnections:
                         currentSeverState.networkConnections = try decoder.decode([NetworkConnection].self, from: data.0)
+                        currentSeverState.command = .networkConnections
+                    case .currentUsers:
+                        currentSeverState.currentUsers = try decoder.decode([CurrentUser].self, from: data.0)
+                        currentSeverState.command = .currentUsers
+                    case .runningProcesses:
+                        currentSeverState.runningProcesses = try decoder.decode([RunningProcess].self, from: data.0)
+                        currentSeverState.command = .runningProcesses
                     }
-                case .currentUsers:
-                    currentSeverState.currentUsers = try decoder.decode([CurrentUser].self, from: data.0)
-                case .runningProcesses:
-                    currentSeverState.runningProcesses = try decoder.decode([RunningProcess].self, from: data.0)
+                    let turnAroundTime = date.distance(to: Date())
+                    currentSeverState.turnAroundTime = turnAroundTime
+                    currentSeverState.totalTurnAroundTime += turnAroundTime
+                    currentSeverState.turnAroundCount += 1
+                    
+                    serverStateHistory[normalizeDate(to: [.nanosecond], with: date)] = currentSeverState
+                    
+                    var secondSeverState = ServerState.empty
+                    
+                    secondSeverState.turnAroundTime = turnAroundTime
+                    secondSeverState.totalTurnAroundTime += turnAroundTime
+                    secondSeverState.turnAroundCount += 1
+                    
+                    serverStateHistorySecond[normalizeDate(to: [.second], with: date)] = secondSeverState
+                    
+                    var minuteSeverState = ServerState.empty
+                    
+                    minuteSeverState.turnAroundTime = turnAroundTime
+                    minuteSeverState.totalTurnAroundTime += turnAroundTime
+                    minuteSeverState.turnAroundCount += 1
+                    
+                    serverStateHistoryMinute[normalizeDate(to: [.minute], with: date)] = minuteSeverState
+                    
                 }
-                currentSeverState.turnAroundTime = date.distance(to: Date())
-                serverStateHistory[date] = currentSeverState
-                
             }
         }
+   }
+    func normalizeDate(to unit: Set<Calendar.Component>, with date: Date) -> Date {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents(unit, from: date)
+        return calendar.date(from: components) ?? Date()
     }
 }

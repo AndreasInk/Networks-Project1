@@ -12,6 +12,8 @@ struct AnalyticsView: View {
     @EnvironmentObject var networkManager: NetworkManager
     @State var selectedCommand = ServerCommand.dateTime
     @State var selectedTime = TurnAroundTime.elapsed
+    
+    @State var unit: Calendar.Component = .nanosecond
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -33,28 +35,48 @@ struct AnalyticsView: View {
                             selectedTime.next()
                         }
                     }
+                Text(unit == .nanosecond ? "Nanosecond" : unit == .second ? "Second" : "Minute")
+                    .contentTransition(.numericText())
+                    .font(.largeTitle.bold())
+                    .padding()
+                    .onTapGesture {
+                        withAnimation(.spring()) {
+                            if unit == .nanosecond {
+                                unit = .second
+                            } else if unit == .second {
+                                unit = .minute
+                            } else {
+                                unit = .nanosecond
+                            }
+                        }
+                    }
             }
             
             Chart {
                 switch selectedTime {
                 case .elapsed:
                     ForEach(Array(networkManager.serverStateHistory.values), id: \.requestDate) { state in
-                        switch selectedCommand {
-                            case 
+                        if state.command == selectedCommand {
+                            BarMark(x: .value("", state.requestDate, unit: unit), y: .value("", state.turnAroundTime))
                         }
-                        BarMark(x: .value("", state.requestDate), y: .value("", state.turnAroundTime))
                     }
                 case .total:
-                    ForEach(Array(networkManager.serverStateHistory.values), id: \.requestDate) { state in
-                        LineMark(x: .value("", state.requestDate), y: .value("", state.totalTurnAroundTime))
+                    ForEach(Array(networkManager.serverStateHistorySecond.values), id: \.requestDate) { state in
+                        if state.command == selectedCommand {
+                            BarMark(x: .value("", state.requestDate, unit: unit), y: .value("", state.totalTurnAroundTime))
+                        }
                     }
                 case .average:
-                    ForEach(Array(networkManager.serverStateHistory.values), id: \.requestDate) { state in
-                        LineMark(x: .value("", state.requestDate), y: .value("", state.averageTurnAroundTime))
+                    ForEach(Array(networkManager.serverStateHistorySecond.values), id: \.requestDate) { state in
+                        if state.command == selectedCommand {
+                            BarMark(x: .value("", state.requestDate, unit: unit), y: .value("", state.averageTurnAroundTime))
+                            
+                        }
                     }
                 }
                 
             }
+            .contentTransition(.interpolate)
             .chartXAxis {
                 AxisMarks(values: .automatic) { index in
                     AxisGridLine()
