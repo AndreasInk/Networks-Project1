@@ -54,10 +54,10 @@ def getComplexEndpoint(endpoint: str):
     return json
 
 # Given columns, this method prints the column and value
-def printJSON(columns: [str], json):
-    for column in columns:
+def printJSON(json):
+    for key, value in json.items():
         try:
-            print(column + ": " + json[column])
+            print(key + ": " + value)
         except:
             print("Column not found")
 
@@ -76,16 +76,16 @@ while inputKey != "" or inputKey != "q":
 
         if inputKey == "n":
             networkConnections = getComplexEndpoint("networkConnections")
-            printJSON(["proto", "receiveQueue", "sendQueue", "localAddress", "foreignAddress"], networkConnections)
+            printJSON(networkConnections)
         
         if inputKey == "p":
             runningProcesses = getComplexEndpoint("runningProcesses")
             print(runningProcesses)
-            printJSON(["user", "pid"], runningProcesses)
+            printJSON(runningProcesses)
         
         if inputKey == "cu":
             currentUsers = getComplexEndpoint("currentUsers")
-            printJSON(["name", "host"], currentUsers)
+            printJSON(currentUsers)
 
         averageTimes.append(datetime.datetime.now().timestamp() - iterationStartDate)
 
