@@ -27,8 +27,8 @@ struct ServerStateDetailView: View {
                         ForEach(state.currentUsers, id: \.name) { connection in
                             Text(connection.name)
                         }
-                        ForEach(state.runningProcesses, id: \.name) { connection in
-                            Text(connection.name)
+                        ForEach(state.runningProcesses, id: \.user) { connection in
+                            Text(connection.user)
                         }
                     }
                 }

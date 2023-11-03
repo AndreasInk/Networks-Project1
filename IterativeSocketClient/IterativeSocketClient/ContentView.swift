@@ -21,13 +21,6 @@ struct ContentView: View {
             VStack {
                 ServerHistoryView(selectedState: $selectedState, history: networkManager.serverStateHistory)
                     .toolbar {
-                        ToolbarItem(placement: .primaryAction) {
-                            Button {
-                                //networkManager.sendRequest()
-                            } label: {
-                                Image(systemName: "plus")
-                            }
-                        }
                         ToolbarItem {
                             Button {
                                 openWindow(id: .statsWindow)

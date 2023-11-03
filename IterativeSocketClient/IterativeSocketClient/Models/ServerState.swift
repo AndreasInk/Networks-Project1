@@ -38,10 +38,10 @@ struct ServerState: Codable, Hashable {
 
         let networkConnection1 = NetworkConnection(proto: "", receiveQueue: "", sendQueue: "", localAddress: "", foreignAddress: "", state: "")
         let networkConnection2 = NetworkConnection(proto: "", receiveQueue: "", sendQueue: "", localAddress: "", foreignAddress: "", state: "")
-        let currentUser1 = CurrentUser(name: "User1", ip: 1921683, isConnected: true)
-        let currentUser2 = CurrentUser(name: "User2", ip: 1921684, isConnected: false)
-        let runningProcess1 = RunningProcess(name: "Process1", ip: 1921685, isConnected: true)
-        let runningProcess2 = RunningProcess(name: "Process2", ip: 1921686, isConnected: false)
+        let currentUser1 = CurrentUser(name: "User1", host: "1921683")
+        let currentUser2 = CurrentUser(name: "User2", host: "1921684")
+        let runningProcess1 = RunningProcess(user: "Process1", pid: "")
+        let runningProcess2 = RunningProcess(user: "Process2", pid: "")
         
         return [
             ServerState(dateTime: .random, upTime: 3600, memoryUsage: 512, networkConnections: [networkConnection1], currentUsers: [currentUser1], runningProcesses: [runningProcess1], totalTurnAroundTime: Double.random(in: 0...0.2)),
@@ -79,19 +79,17 @@ struct MemoryUsage: Codable, Hashable {
 }
 
 struct RunningProcess: Codable, Hashable {
-    var name: String
-    var ip: Int
-    var isConnected: Bool
+    var user: String
+    var pid: String
     
-    static let empty = [RunningProcess(name: "", ip: 0, isConnected: false)]
+    static let empty = [RunningProcess(user: "", pid: "")]
 }
 
 struct CurrentUser: Codable, Hashable {
     var name: String
-    var ip: Int
-    var isConnected: Bool
+    var host: String
     
-    static let empty = [CurrentUser(name: "", ip: 0, isConnected: false)]
+    static let empty = [CurrentUser(name: "", host: "")]
 }
 
 enum ServerCommand: String, CaseIterable, Codable {
