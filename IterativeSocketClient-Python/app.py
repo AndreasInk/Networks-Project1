@@ -76,7 +76,7 @@ while inputKey != "" or inputKey != "q":
 
         if inputKey == "n":
             networkConnections = getComplexEndpoint("networkConnections")
-            printJSON(["proto", "receiveQueue", "sendQueue", "localAddress", "foreignAddress", "state"], networkConnections)
+            printJSON(["proto", "receiveQueue", "sendQueue", "localAddress", "foreignAddress"], networkConnections)
         
         if inputKey == "p":
             runningProcesses = getComplexEndpoint("runningProcesses")

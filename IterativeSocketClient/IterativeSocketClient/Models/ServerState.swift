@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ServerState: Codable, Hashable {
     static func == (lhs: ServerState, rhs: ServerState) -> Bool {
-        return lhs.dateTime == rhs.dateTime
+        return lhs.id == rhs.id
     }
-    
+    var id = UUID().uuidString
+    var requestDate: Date = Date()
     var dateTime: TimeInterval
     var upTime: TimeInterval
     var memoryUsage: Int

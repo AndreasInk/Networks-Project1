@@ -23,7 +23,7 @@ struct ContentView: View {
                     .toolbar {
                         ToolbarItem(placement: .primaryAction) {
                             Button {
-                                networkManager.sendRequest()
+                                //networkManager.sendRequest()
                             } label: {
                                 Image(systemName: "plus")
                             }

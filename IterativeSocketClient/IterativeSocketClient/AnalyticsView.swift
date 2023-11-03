@@ -38,31 +38,32 @@ struct AnalyticsView: View {
             Chart {
                 switch selectedTime {
                 case .elapsed:
-                    ForEach(networkManager.serverStateHistory, id: \.dateTime) { state in
-                        LineMark(x: .value("", state.dateTime), y: .value("", state.turnAroundTime))
+                    ForEach(Array(networkManager.serverStateHistory.values), id: \.requestDate) { state in
+                        switch selectedCommand {
+                            case 
+                        }
+                        BarMark(x: .value("", state.requestDate), y: .value("", state.turnAroundTime))
                     }
                 case .total:
-                    ForEach(networkManager.serverStateHistory, id: \.dateTime) { state in
-                        LineMark(x: .value("", state.dateTime), y: .value("", state.turnAroundTime))
+                    ForEach(Array(networkManager.serverStateHistory.values), id: \.requestDate) { state in
+                        LineMark(x: .value("", state.requestDate), y: .value("", state.totalTurnAroundTime))
                     }
                 case .average:
-                    ForEach(networkManager.serverStateHistory, id: \.dateTime) { state in
-                        LineMark(x: .value("", state.dateTime), y: .value("", state.averageTurnAroundTime))
+                    ForEach(Array(networkManager.serverStateHistory.values), id: \.requestDate) { state in
+                        LineMark(x: .value("", state.requestDate), y: .value("", state.averageTurnAroundTime))
                     }
                 }
                 
             }
             .chartXAxis {
-                AxisMarks { value in
+                AxisMarks(values: .automatic) { index in
                     AxisGridLine()
                     AxisTick()
-                    if value.index != value.count -  1 {
-                        AxisValueLabel()
-                    }
+                    AxisValueLabel()
                 }
             }
             .chartYAxis {
-                AxisMarks { value in
+                AxisMarks(values: .automatic) { value in
                     AxisGridLine()
                     AxisTick()
                     AxisValueLabel()

@@ -9,10 +9,10 @@ import SwiftUI
 
 struct ServerHistoryView: View {
     @Binding var selectedState: ServerState?
-    var history: [ServerState]
+    var history: [Date: ServerState]
     var body: some View {
-        List(history, id: \.dateTime, selection: $selectedState) { state in
-            NavigationLink(state.dateTime.formatted(), value: state)
+        List(Array(history.values), id: \.id, selection: $selectedState) { state in
+            NavigationLink(state.requestDate.formatted(), value: state)
         }
     }
 }

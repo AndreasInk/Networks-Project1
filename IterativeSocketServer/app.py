@@ -27,9 +27,9 @@ def network_connections():
     jsonToReturn = []
     # We have to do some parsing to return a json
     for line in result.split("\n"):
-        if len(line.split()) == 8:
-            protocol, receiveQueue, sendQueue, localAddress, foreignAddress, _, state, _ = line.split()
-            jsonToReturn.append({"proto": protocol, "receiveQueue": receiveQueue, "sendQueue": sendQueue, "localAddress": localAddress, "foreignAddress": foreignAddress, "state": state})
+        if len(line.strip().split()) == 6:
+            protocol, receiveQueue, sendQueue, localAddress, foreignAddress, _ = line.split()
+            jsonToReturn.append({"proto": protocol, "receiveQueue": receiveQueue, "sendQueue": sendQueue, "localAddress": localAddress, "foreignAddress": foreignAddress})
     return json.dumps(jsonToReturn)
 
 # TODO: Check for correct fields in the project instructions
@@ -38,7 +38,7 @@ def current_users():
     current_users = subprocess.run(['who'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     for line in current_users.split("\n"):
         print(f"current_users {len(line.split())}")
-        if len(line.split()) == 5:
+        if len(line.strip().split()) == 5:
             name, host, _, _, _ = line.split()
             users.append({"name": name,
                     "host": host})
@@ -50,7 +50,7 @@ def running_processes():
     current_processes = subprocess.run(['ps'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     for line in current_processes.split("\n"):
         print(f"running processes {len(line.split())}")
-        if len(line.split()) == 5:
+        if len(line.strip().split()) == 5:
            user, pid, cpu, mem, _ = line.split()
            processes.append({
                 "user": user,
