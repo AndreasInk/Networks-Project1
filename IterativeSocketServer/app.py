@@ -20,7 +20,6 @@ def memory_usage():
     return json.dumps({"memoryUsage": os.cpu_count()})
 
 # Returns network connections 
-# TODO: Check for correct fields in the project instructions
 def network_connections():
     
     result = subprocess.run(['netstat'], stdout=subprocess.PIPE).stdout.decode('utf-8')
@@ -32,24 +31,20 @@ def network_connections():
             jsonToReturn.append({"proto": protocol, "receiveQueue": receiveQueue, "sendQueue": sendQueue, "localAddress": localAddress, "foreignAddress": foreignAddress})
     return json.dumps(jsonToReturn)
 
-# TODO: Check for correct fields in the project instructions
 def current_users():
     users = []
     current_users = subprocess.run(['who'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     for line in current_users.split("\n"):
-        print(f"current_users {len(line.split())}")
         if len(line.strip().split()) == 5:
             name, host, _, _, _ = line.split()
             users.append({"name": name,
                     "host": host})
     return json.dumps(users)
 
-# TODO: Check for correct fields in the project instructions
 def running_processes():
     processes = []
     current_processes = subprocess.run(['ps'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     for line in current_processes.split("\n"):
-        print(f"running processes {len(line.split())}")
         if len(line.strip().split()) == 4:
            user, pid, cpu, mem = line.split()
            processes.append({
