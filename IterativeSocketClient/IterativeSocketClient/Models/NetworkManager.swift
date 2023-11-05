@@ -21,7 +21,7 @@ class NetworkManager: ObservableObject {
         for _ in 0...numberOfRequests {
             Task {
                 let session = URLSession(configuration: .default)
-                session.configuration.timeoutIntervalForRequest = 25
+                session.configuration.timeoutIntervalForRequest = 180
                 let data = try await session.data(from: url.appending(path: command.rawValue))
                 print(String(data: data.0, encoding: .utf8))
                 decoder.dateDecodingStrategy = .secondsSince1970
