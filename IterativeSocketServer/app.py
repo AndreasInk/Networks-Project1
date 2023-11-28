@@ -96,7 +96,9 @@ class ServerHandler(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write("Not found".encode())
 
+class ThreadingHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
+    pass
 # Starts our server
-with socketserver.TCPServer(("", 3216), ServerHandler) as httpd:
+with ThreadingHTTPServer(("", 3216), ServerHandler) as httpd:
     print(f"Serving")
     httpd.serve_forever()
