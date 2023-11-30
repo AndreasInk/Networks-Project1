@@ -108,11 +108,15 @@ while inputKey != "" or inputKey != "q":
     for thread in threads:
         thread.join()
         
+    print(f"Requests over time: {averageTimes}")
+    print(f"Average time per request: {mean(averageTimes)}")
+    for time in averageTimes:
+        print(f"{time}, ")
+        
+    averageTimes = []
+
     inputKey = input(inputInstructions)
     iterations = int(input(iterationInstructions))
 
-    print(f"Requests over time: {averageTimes}")
-    print(f"Average time per request: {mean(averageTimes)}")
-
-    averageTimes = []
+    
     
